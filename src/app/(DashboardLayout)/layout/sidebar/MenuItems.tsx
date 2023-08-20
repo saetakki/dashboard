@@ -21,7 +21,7 @@ const Menuitems = [
     id: uniqueId(),
     title: "기업별 자세히보기",
     icon: IconHome,
-    href: "/companies/companies",
+    href: "/companies/",
   },
   
   {

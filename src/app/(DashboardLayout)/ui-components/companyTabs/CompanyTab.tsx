@@ -8,10 +8,11 @@ import { addTeamLeader, TeamLeader } from '../../../../store/companySlice';
 
 type CompanyTabsProps = {
   tabs: string;
+  add: boolean
   auth: string;
 };
 
-const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
+const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, add, auth }) => {
 
   type Leader = {
     [key: string]: string;
@@ -25,6 +26,8 @@ const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     아이디: string;
     비밀번호: string;
   };
+
+  console.log(add)
 
   const dispatch = useDispatch();
   const teamLeaders = useSelector((state: RootState) => state.company.teamLeadersByCompany[tabs]);
@@ -77,12 +80,15 @@ const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     <Box mt={1}>
       <Grid container spacing={10}>
         <Grid item xs={12}>
-          <Button 
-          variant="contained" 
-          color="secondary" 
-          onClick={handleOpen}>
-            팀 리더 추가
-          </Button>
+          {add ? 
+            <Button 
+            variant="contained" 
+            color="secondary" 
+            onClick={handleOpen}>
+              팀 리더 추가
+            </Button>
+            : null
+          }
 
           <Table sx={{ width: '100%', marginTop: '20px' }}>
             <TableHead>

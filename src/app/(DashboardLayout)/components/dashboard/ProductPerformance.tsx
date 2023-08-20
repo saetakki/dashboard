@@ -1,5 +1,6 @@
 import React from "react";
 import { SalesData } from '../../../../store/companySlice'
+import Link from 'next/link';
 
 import {
   Typography,
@@ -56,29 +57,40 @@ const products = [
 
 interface ProductPerfomanceProps {
   data: SalesData[]
+  tab: string
 }
 
 
 const ProductPerfomance = (props:ProductPerfomanceProps) => {
 
-  const salesDataSample: SalesData = {
-    관리번호: 0,
-    팀: 0,
-    전체신청: 0,
-    상담전: 0,
-    상담완료: 0,
-    상담거절: 0,
-    성공: 0,
-    실패: 0,
-    대출: 0,
-    연구소: 0,
-    벤처: 0,
-    메인: 0,
-    경정: 0,
-    총매출: 0,
+  const {data, tab} = props
+
+    const salesDataSample: SalesData = {
+      관리번호: 0,
+      팀: 0,
+      전체신청: 0,
+      상담전: 0,
+      상담완료: 0,
+      상담거절: 0,
+      성공: 0,
+      실패: 0,
+      대출: 0,
+      연구소: 0,
+      벤처: 0,
+      메인: 0,
+      경정: 0,
+      총매출: 0,
   };
+
+
+
+  
+  const salesData = data?.length ? data[0] : salesDataSample;
   const salesDataKeys = Object.keys(salesDataSample);
-  const data = props.data
+  
+
+
+
   const handleClickTeam = () => {
     console.log("click");
   }
@@ -114,20 +126,20 @@ const ProductPerfomance = (props:ProductPerfomanceProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-
-          {data && data.map((company, companyIndex) => (
+            {data && data.map((company, companyIndex) => (
               <TableRow key={companyIndex}>
                 {Object.values(company).map((item, index) => (
-                  <TableCell key={index} onClick={handleClickTeam}>
-                    <Typography color="textSecondary" variant="h6">
-                      {item}
-                    </Typography>
+                  <TableCell key={index}>
+                    <Link href={`/company/${tab}/${company.팀}`}>  
+                        <Typography color="textSecondary" variant="h6">
+                          {item}
+                        </Typography>
+                    </Link>
                   </TableCell>
                 ))}
               </TableRow>
             ))}
-
-          </TableBody>
+    </TableBody>
         </Table>
       </TableContainer>
     </BaseCard>

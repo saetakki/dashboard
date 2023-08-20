@@ -82,7 +82,7 @@ const CompanyDashboard = () => {
                 <Box bgcolor="grey.200" mt={2} width={"100%"}>
                   {companies.map((tab,index) => (
                     <TabPanel key={index} value={tab.value}>
-                      <CompanyTabs tabs={tab.label} auth={"auth"} add={false}/>
+                      <CompanyTabs tabs={tab.label} auth={"auth"} add={true} />
                     </TabPanel>
                   ))}
                 </Box>
