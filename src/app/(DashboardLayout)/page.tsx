@@ -42,7 +42,7 @@ const Dashboard = () => {
 
 
   
-  console.log(currentCompanySalesData)
+  console.log(currentCompanySalesData, companies)
 
 
   const handleValueChange = (event: React.SyntheticEvent, newValue: string) => {

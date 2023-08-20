@@ -23,6 +23,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import CompanyTabs from '@/app/(DashboardLayout)/ui-components/companyTabs/CompanyTab';
+import TableFrame from '../../tables/basic/page';
 
 
 const CompanyDashboard = () => {
@@ -42,7 +43,7 @@ const CompanyDashboard = () => {
     }
   };
 
-  console.log(currentCompany)
+  console.log(currentCompany, companies)
 
   const handleCompanyChange = (event: React.SyntheticEvent) => {
     const target = event.target as HTMLButtonElement;
@@ -64,38 +65,40 @@ const CompanyDashboard = () => {
   };
 
 
-  return (
-    <PageContainer title="Dashboard" description="this is Dashboard">
-      <Box mt={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <TabContext value={value}>
-              <Box display="flex" flexDirection="column" alignItems="start">
-                {/* 전체 회사 목록을 출력하는 함수 */}
-                <TabList onChange={handleValueChange}>
-                    {companies.map((tab) => (
-                      <Tab key={tab.value} label={tab.label} value={tab.value} onClick={handleCompanyChange}/>
-                    ))}
-                </TabList>
 
-                {/* 회사별 상세 정보를 출력하는 함수 */}               
-                <Box bgcolor="grey.200" mt={2} width={"100%"}>
-                  {companies.map((tab,index) => (
-                    <TabPanel key={index} value={tab.value}>
-                      <CompanyTabs tabs={tab.label} auth={"auth"} add={true} />
-                    </TabPanel>
-                  ))}
-                </Box>
-              </Box>
-            </TabContext>
-          </Grid>
-          <Grid item xs={12}>
-            {/* {console.log(dummyPerformance[companies[parseInt(value)-1].label])} */}
-            <ProductPerfomance data={dummyPerformance[companies[parseInt(value)-1].label]} tab={currentCompany}/>
-          </Grid>
-        </Grid>
-      </Box>
-    </PageContainer>
+
+  return (
+        <PageContainer title="Dashboard" description="this is Dashboard">
+          <Box mt={3}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TabContext value={value}>
+                  <Box display="flex" flexDirection="column" alignItems="start">
+                    {/* 전체 회사 목록을 출력하는 함수 */}
+                    <TabList onChange={handleValueChange}>
+                        {companies.map((tab) => (
+                          <Tab key={tab.value} label={tab.label} value={tab.value} onClick={handleCompanyChange}/>
+                        ))}
+                    </TabList>
+
+                    {/* 회사별 상세 정보를 출력하는 함수 */}               
+                    <Box bgcolor="grey.200" mt={2} width={"100%"}>
+                      {companies.map((tab,index) => (
+                        <TabPanel key={index} value={tab.value}>
+                          <CompanyTabs tabs={tab.label} auth={"auth"} add={true} />
+                        </TabPanel>
+                      ))}
+                    </Box>
+                  </Box>
+                </TabContext>
+              </Grid>
+              <Grid item xs={12}>
+                {/* {console.log(dummyPerformance[companies[parseInt(value)-1].label])} */}
+                <ProductPerfomance data={dummyPerformance[companies[parseInt(value)-1].label]} tab={currentCompany}/>
+              </Grid>
+            </Grid>
+          </Box>
+        </PageContainer>
   )
 }
 

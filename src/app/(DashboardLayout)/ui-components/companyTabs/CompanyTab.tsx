@@ -27,7 +27,6 @@ const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, add, auth }) => {
     비밀번호: string;
   };
 
-  console.log(add)
 
   const dispatch = useDispatch();
   const teamLeaders = useSelector((state: RootState) => state.company.teamLeadersByCompany[tabs]);

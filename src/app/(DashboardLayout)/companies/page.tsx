@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCompany } from '@/store/companySlice'
+import { addCompany, selectCompanies } from '@/store/companySlice'
 import { RootState} from '@/store/store';
 import { Grid, 
   Box, 
@@ -21,9 +21,7 @@ import { dummyPerformance } from '@/app/(DashboardLayout)/dummy/dummyData';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import CompanyTabs from '@/app/(DashboardLayout)/ui-components/companyTabs/CompanyTab';
-
+import TableFrame from '@/app/(DashboardLayout)/tables/basic/page';
 
 const CompanyDashboard = () => {
 
@@ -31,9 +29,8 @@ const CompanyDashboard = () => {
   const companies = useSelector((state: RootState) => state.company.companies);
   const [value, setValue] = useState('1');
   const [currentCompany, setCurrentCompany] = useState(companies[0].label); // 현재 선택된 회사 이름
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newCompanyName, setNewCompanyName] = useState('');
   const addCompanyValue = (companies.length + 1).toString();
+  const teamLeaderList = useSelector(selectCompanies).teamLeadersByCompany[currentCompany] 
 
 
   const handleValueChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -42,7 +39,8 @@ const CompanyDashboard = () => {
     }
   };
 
-  console.log(currentCompany)
+  console.log(useSelector(selectCompanies).teamLeadersByCompany[currentCompany])
+
 
   const handleCompanyChange = (event: React.SyntheticEvent) => {
     const target = event.target as HTMLButtonElement;
@@ -50,52 +48,34 @@ const CompanyDashboard = () => {
   };
 
 
-  const handleDialogOpen = () => {
-    setIsDialogOpen(!isDialogOpen);
-  };
-
-  const handleAddCompany = () => {
-    if (newCompanyName.trim() !== "") {
-        const newValue = (companies.length -1).toString() // Get next value based on the length of tabs
-        const newTab = { value: newValue, label: newCompanyName.trim() };
-        dispatch(addCompany(newTab)); // Redux store에 회사 추가
-        handleDialogOpen();
-    }
-  };
 
 
-  return (
-    <PageContainer title="Dashboard" description="this is Dashboard">
-      <Box mt={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <TabContext value={value}>
-              <Box display="flex" flexDirection="column" alignItems="start">
-                {/* 전체 회사 목록을 출력하는 함수 */}
-                <TabList onChange={handleValueChange}>
-                    {companies.map((tab) => (
-                      <Tab key={tab.value} label={tab.label} value={tab.value} onClick={handleCompanyChange}/>
-                    ))}
-                </TabList>
-
-                {/* 회사별 상세 정보를 출력하는 함수 */}               
-                <Box bgcolor="grey.200" mt={2} width={"100%"}>
-                  {companies.map((tab,index) => (
-                    <TabPanel key={index} value={tab.value}>
-                      <CompanyTabs tabs={tab.label} auth={"auth"} add={false}/>
-                    </TabPanel>
-                  ))}
-                </Box>
-              </Box>
-            </TabContext>
-          </Grid>
-          <Grid item xs={12}>
-            {/* {console.log(dummyPerformance[companies[parseInt(value)-1].label])} */}
-            <ProductPerfomance data={dummyPerformance[companies[parseInt(value)-1].label]} tab={currentCompany}/>
-          </Grid>
-        </Grid>
-      </Box>
-    </PageContainer>
+  return (        <PageContainer title="Dashboard" description="this is Dashboard">
+  <Box mt={3}>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <TabContext value={value}>
+          <Box display="flex" flexDirection="column" alignItems="start">
+            {/* 전체 회사 목록을 출력하는 함수 */}
+            <TabList onChange={handleValueChange}>
+                {companies.map((tab) => (
+                  <Tab key={tab.value} label={tab.label} value={tab.value} onClick={handleCompanyChange}/>
+                ))}
+            </TabList>
+          </Box>
+          {/* 회사별 팀장 목록을 출력하는 함수 */}
+          {teamLeaderList.map((teamLeader,idx) => (
+            <TableFrame key={idx} tab={currentCompany} team={teamLeader.관리번호} />
+          ))}
+        </TabContext>
+      </Grid>
+      <Grid item xs={12}>
+        {/* {console.log(dummyPerformance[companies[parseInt(value)-1].label])} */}
+        <ProductPerfomance data={dummyPerformance[companies[parseInt(value)-1].label]} tab={currentCompany}/>
+      </Grid>
+    </Grid>
+  </Box>
+</PageContainer>
   )
 }
 
