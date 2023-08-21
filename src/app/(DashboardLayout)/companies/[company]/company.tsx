@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCompany } from '@/store/companySlice'
+import { addCompany, selectCompanies } from '@/store/companySlice'
 import { RootState} from '@/store/store';
 import { Grid, 
   Box, 
@@ -22,8 +22,9 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import CompanyTabs from '@/app/(DashboardLayout)/ui-components/companyTabs/CompanyTab';
+import CompanyTabs from '@/app/(DashboardLayout)/ui-components/tabs/MainboardTeamLeaderTab';
 import TableFrame from '../../tables/basic/page';
+import MainboardTeamLeaderTab from '@/app/(DashboardLayout)/ui-components/tabs/MainboardTeamLeaderTab';
 
 
 const CompanyDashboard = () => {
@@ -35,6 +36,10 @@ const CompanyDashboard = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newCompanyName, setNewCompanyName] = useState('');
   const addCompanyValue = (companies.length + 1).toString();
+
+  console.log(useSelector(selectCompanies))
+
+
 
 
   const handleValueChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -85,7 +90,8 @@ const CompanyDashboard = () => {
                     <Box bgcolor="grey.200" mt={2} width={"100%"}>
                       {companies.map((tab,index) => (
                         <TabPanel key={index} value={tab.value}>
-                          <CompanyTabs tabs={tab.label} auth={"auth"} add={true} />
+                          <MainboardTeamLeaderTab tabs={tab.label} auth={"auth"}/>
+                          {/* <ProductPerfomance data={dummyPerformance[companies[parseInt(value)-1].label]} tab={currentCompany}/> */}
                         </TabPanel>
                       ))}
                     </Box>
@@ -94,7 +100,7 @@ const CompanyDashboard = () => {
               </Grid>
               <Grid item xs={12}>
                 {/* {console.log(dummyPerformance[companies[parseInt(value)-1].label])} */}
-                <ProductPerfomance data={dummyPerformance[companies[parseInt(value)-1].label]} tab={currentCompany}/>
+                {/* <ProductPerfomance data={dummyPerformance[companies[parseInt(value)-1].label]} tab={currentCompany}/> */}
               </Grid>
             </Grid>
           </Box>

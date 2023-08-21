@@ -8,6 +8,7 @@ import PageContainer from '@/app/(DashboardLayout)/components/container/PageCont
 import ParentCard from '@/app/(DashboardLayout)/components/shared/ParentCard';
 import UserTable from '@/app/(DashboardLayout)/components/tables/UserTable';
 import { selectCompanies } from '@/store/companySlice';
+import CompanyTeamLeaderTab from '@/app/(DashboardLayout)/ui-components/tabs/CompanyTeamLeaderTab';
 
 
 
@@ -19,7 +20,7 @@ import { selectCompanies } from '@/store/companySlice';
 
 interface TableFrameProps {
   tab: string;
-  team: number;
+  team: string;
 }
 
 const TableFrame = (props:TableFrameProps) => {
@@ -40,17 +41,15 @@ const TableFrame = (props:TableFrameProps) => {
   const targetLeaderData = useSelector(selectCompanies).teamLeadersByCompany[tab][Number(team) - 1]
 
 
-
   return (
         <PageContainer description="this is Basic Table">
           {/* breadcrumb */}
-          <Breadcrumb title={`${tab} 현황`} items={BCrumb} />
           {/* end breadcrumb */}
           <ParentCard title={`${tab} ${team}팀 현황`}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Box>
-                  <UserTable data={targetLeaderData}/>
+                  <CompanyTeamLeaderTab tabs={tab} team={team} auth={"auth"} />
                 </Box>
               </Grid>
             </Grid>

@@ -11,7 +11,7 @@ import {
 import BlankCard from '../shared/BlankCard';
 import { Box, Stack } from '@mui/system';
 import { IconDotsVertical, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
-import CompanyTabs from '@/app/(DashboardLayout)/ui-components/companyTabs/CompanyTab';
+import CompanyTabs from '@/app/(DashboardLayout)/ui-components/tabs/MainboardTeamLeaderTab';
 
 
 const rows = [

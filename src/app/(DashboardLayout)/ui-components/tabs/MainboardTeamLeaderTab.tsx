@@ -8,11 +8,11 @@ import { addTeamLeader, TeamLeader } from '../../../../store/companySlice';
 
 type CompanyTabsProps = {
   tabs: string;
-  add: boolean
   auth: string;
 };
 
-const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, add, auth }) => {
+const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
+
 
   type Leader = {
     [key: string]: string;
@@ -79,16 +79,12 @@ const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, add, auth }) => {
     <Box mt={1}>
       <Grid container spacing={10}>
         <Grid item xs={12}>
-          {add ? 
             <Button 
             variant="contained" 
             color="secondary" 
             onClick={handleOpen}>
               팀 리더 추가
             </Button>
-            : null
-          }
-
           <Table sx={{ width: '100%', marginTop: '20px' }}>
             <TableHead>
               <TableRow>
@@ -140,4 +136,4 @@ const CompanyTabs: React.FC<CompanyTabsProps> = ({ tabs, add, auth }) => {
   );
 };
 
-export default CompanyTabs;
+export default MainboardTeamLeaderTab;
