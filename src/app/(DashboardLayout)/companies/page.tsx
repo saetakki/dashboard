@@ -5,36 +5,35 @@ import { addCompany, selectCompanies } from '@/store/companySlice'
 import { RootState} from '@/store/store';
 import { Grid, 
   Box, 
-  Dialog, 
-  DialogTitle, 
-  DialogContent, 
-  DialogActions, 
-  Button, 
-  TextField, 
+  TableRow,
+  TableCell,
+  Typography,
 } from '@mui/material';
 
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import ProductPerfomance from '@/app/(DashboardLayout)/components/dashboard/ProductPerformance';
 import { dummyPerformance } from '@/app/(DashboardLayout)/dummy/dummyData';
 
+import CompanyNamesTabs from '@/app/(DashboardLayout)/ui-components/tabs/CompaniesNameTabs';
 import MainboardTeamLeaderTab from '@/app/(DashboardLayout)/ui-components/tabs/MainboardTeamLeaderTab';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
-import TableFrame from '@/app/(DashboardLayout)/tables/basic/page';
+import Breadcrumb from '../layout/shared/breadcrumb/Breadcrumb';
+import BaseTable from '@/app/(DashboardLayout)/components/tables/baseTable';
+import NoData from '@/app/(DashboardLayout)/components/tables/noData';
 import { current } from '@reduxjs/toolkit';
+
+
 
 const CompanyDashboard = () => {
 
-  const dispatch = useDispatch();
   const companies = useSelector((state: RootState) => state.company.companies);
   const [value, setValue] = useState('1');
   const [currentCompany, setCurrentCompany] = useState(companies[0].label); // 현재 선택된 회사 이름
   const addCompanyValue = (companies.length + 1).toString();
   const teamLeaderList = useSelector(selectCompanies).teamLeadersByCompany[currentCompany] 
   const salarySummayByTeam = useSelector(selectCompanies).salesData[currentCompany]
-
-  console.log(salarySummayByTeam)
 
 
   const handleValueChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -50,37 +49,45 @@ const CompanyDashboard = () => {
 
 
 
+  console.log(teamLeaderList)
 
-  console.log(useSelector(selectCompanies).salesData[currentCompany]?.[0] || undefined)
-  
+  const BCrumb = [
+    {
+      to: '/',
+      title: 'Home',
+    },
+    {
+      title: `${currentCompany}`,
+    },
+  ];
+
 
 
   return (        
   <PageContainer title="Dashboard" description="this is Dashboard">
-  <Box mt={3}>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <TabContext value={value}>
-          <Box display="flex" flexDirection="column" alignItems="start">
-            {/* 전체 회사 목록을 출력하는 함수 */}
-            <TabList onChange={handleValueChange}>
-                {companies.map((tab) => (
-                  <Tab key={tab.value} label={tab.label} value={tab.value} onClick={handleCompanyChange}/>
-                ))}
-            </TabList>
-          </Box>
-          {/* 팀별 팀장 목록을 출력하는 함수 */}
-          {teamLeaderList ? teamLeaderList.map((teamLeader,idx) => (
-            <TableFrame key={idx} tab={currentCompany} team={teamLeader.관리번호} />
-          )) : null}
-          <ProductPerfomance data={salarySummayByTeam} tab={currentCompany}/>
-        </TabContext>
+      <Box mt={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TabContext value={value}>
+                <CompanyNamesTabs
+                  setCurrentCompany={setCurrentCompany} 
+                  value={value}
+                  setValue={setValue}
+                  isAddable={false}
+                />
+                <Breadcrumb title={`${currentCompany}`} items={BCrumb} />
+                {teamLeaderList ? teamLeaderList.map((teamLeader, index) => (
+                  <BaseTable key={index} company={currentCompany} team={String(index+1)}/>
+                ))
+                : <NoData/>
+              }
+            </TabContext>
+            </Grid>
+          <Grid item xs={12}>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-      </Grid>
-    </Grid>
-  </Box>
-</PageContainer>
+    </Box>
+  </PageContainer>
   )
 }
 

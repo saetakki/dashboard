@@ -8,29 +8,35 @@ import { addTeamLeader, TeamLeader } from '../../../../store/companySlice';
 
 type CompanyTabsProps = {
   tabs: string;
-  team: string;
   auth: string;
 };
 
-const CompanyTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, team, auth }) => {
+const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
 
-  
   const dispatch = useDispatch();
-  const teamLeader = useSelector((state: RootState) => state.company.teamLeadersByCompany[tabs][Number(team)-1]);
-  const teamLeaderInfo = Object.values(teamLeader)
+  const teamLeaders = useSelector((state: RootState) => state.company.teamLeadersByCompany[tabs]);
   const [open, setOpen] = useState(false);
+
+  const newManagingNumber = () => {
+    const maxExistingId = teamLeaders?.reduce((maxId, leader) => {
+      const currentId = parseInt(leader.관리번호, 10);
+      return currentId > maxId ? currentId : maxId;
+    }, 0) || 0;
   
-  const handleOpen = () => {
-    setOpen(!open);
+    // 최대값에서 1 더한 값을 새로운 팀 리더의 관리번호로 설정
+    const newLeaderId = (maxExistingId + 1).toString();
+    return newLeaderId;
   }
+
+
 
   const headers = ['관리번호', '팀', '팀장', '번호', '도메인', '서브도메인수', '회원수', '아이디', '비밀번호'];
 
   return (
-    <Box mt={1}>
-      <Grid container spacing={10}>
+    <Box>
+      <Grid container>
         <Grid item xs={12}>
-          <Table sx={{ width: '100%', marginTop: '20px' }}>
+          <Table sx={{ width: '100%'}}>
             <TableHead>
               <TableRow>
                 {headers.map((header) => (
@@ -39,24 +45,19 @@ const CompanyTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, team, auth }) 
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                {teamLeader ? teamLeaderInfo.map((row: any, index: number) => (
-                  <TableCell key={index}>{String(row)}</TableCell>
-                )) : null }
+            {teamLeaders ? teamLeaders.map((row: any, index: number) => (
+              <TableRow key={index}>
+                {headers.map((header, cellIndex) => (
+                  <TableCell key={cellIndex}>{String(row[header])}</TableCell>
+                ))}
               </TableRow>
-              {/* {teamLeaders ? teamLeaders.map((row: any, index: number) => (
-                <TableRow key={index}>
-                  {headers.map((header, cellIndex) => (
-                    <TableCell key={cellIndex}>{String(row[header])}</TableCell>
-                  ))}
-                </TableRow>
-              )) : null } */}
+            )) : null }
           </TableBody>
-          </Table>   
+          </Table>
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-export default CompanyTeamLeaderTab;
+export default MainboardTeamLeaderTab;

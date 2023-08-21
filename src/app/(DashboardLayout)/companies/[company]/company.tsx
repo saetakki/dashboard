@@ -23,8 +23,9 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import CompanyTabs from '@/app/(DashboardLayout)/ui-components/tabs/MainboardTeamLeaderTab';
-import TableFrame from '../../tables/basic/page';
+// import TableFrame from '../../tables/basic/page';
 import MainboardTeamLeaderTab from '@/app/(DashboardLayout)/ui-components/tabs/MainboardTeamLeaderTab';
+import CompaniesNameTabs from '../../ui-components/tabs/CompaniesNameTabs';
 
 
 const CompanyDashboard = () => {
@@ -80,11 +81,17 @@ const CompanyDashboard = () => {
                 <TabContext value={value}>
                   <Box display="flex" flexDirection="column" alignItems="start">
                     {/* 전체 회사 목록을 출력하는 함수 */}
-                    <TabList onChange={handleValueChange}>
+                    <CompaniesNameTabs 
+                    setCurrentCompany={setCurrentCompany} 
+                    value={value}
+                    setValue={setValue}
+                    isAddable={false}
+                  />
+                    {/* <TabList onChange={handleValueChange}>
                         {companies.map((tab) => (
                           <Tab key={tab.value} label={tab.label} value={tab.value} onClick={handleCompanyChange}/>
                         ))}
-                    </TabList>
+                    </TabList> */}
 
                     {/* 회사별 상세 정보를 출력하는 함수 */}               
                     <Box bgcolor="grey.200" mt={2} width={"100%"}>

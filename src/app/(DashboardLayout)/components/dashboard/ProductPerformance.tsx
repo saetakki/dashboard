@@ -28,7 +28,9 @@ const ProductPerfomance = (props:ProductPerfomanceProps) => {
 
   
   const {data, tab} = props
-  const dataArr = data && data.map((item) => Object.values(item)) || null
+  console.log(data)
+
+
   const salesHeader = ["관리번호","팀","전체신청","상담전","상담완료","상담거절","성공","실패","대출","연구소","벤처","메인","경정","총매출",]
 
 
@@ -37,7 +39,6 @@ const ProductPerfomance = (props:ProductPerfomanceProps) => {
   }
 
 
-  
   return (
     <BaseCard title="매출 내역">
       <TableContainer
@@ -67,7 +68,7 @@ const ProductPerfomance = (props:ProductPerfomanceProps) => {
             </TableRow>
           </TableHead>
             <TableBody>
-              {data && dataArr.map((item,index) => (
+              {/* {dataArr ? dataArr.map((item,index) => (
                 <TableRow key={index}>
                   {item.map((item,index) => (
                     <TableCell key={index}>
@@ -75,8 +76,8 @@ const ProductPerfomance = (props:ProductPerfomanceProps) => {
                     </TableCell>
                   ))}
                 </TableRow>
-              ))}
-
+              )):
+              null} */}
           </TableBody>
         </Table>
       </TableContainer>
