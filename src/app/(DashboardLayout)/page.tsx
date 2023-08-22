@@ -27,6 +27,8 @@ import MainboardTeamLeaderTab from '@/app/(DashboardLayout)/ui-components/tabs/M
 import FormDialog from './ui-components/dialog/FormDialog';
 import CompaniesNameTabs from './ui-components/tabs/CompaniesNameTabs';
 import onExcelExportHandler from './components/dashboard/onExcelExportHandler';
+import IndividualSalary from './components/tables/individualSalary';
+import AllIndividualSalary from './components/tables/allIndividualSalary';
 
 
 
@@ -52,8 +54,6 @@ const Dashboard = () => {
   }
 
 
-
-
   return (
     <PageContainer title="Dashboard" description="this is Dashboard">
       <Button onClick={onClickExportButtonHandler}>엑셀로 만들기</Button>
@@ -74,6 +74,7 @@ const Dashboard = () => {
                 <Box bgcolor="grey.200" mt={2} width={"100%"}>
                   {companies.map((tab, index) => (
                     <TabPanel key={tab.value} value={tab.value.toString()}> 
+                    
                       <MainboardTeamLeaderTab tabs={tab.label} auth={"auth"}/>
                     </TabPanel>
                   ))}
@@ -82,9 +83,7 @@ const Dashboard = () => {
             </TabContext>
           </Grid>
           <Grid item xs={12}>
-            {/* 회사 팀별 매출 정보를 출력하는 함수 */}
-            <ProductPerformance data={currentCompanyTotalSalesData} tab={currentCompany}/>
-
+            <AllIndividualSalary company={currentCompany}/>
           </Grid>
         </Grid>
       </Box>

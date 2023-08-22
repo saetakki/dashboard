@@ -14,7 +14,7 @@ interface CompaniesNameTabsProps {
 }
 
 
-const CompaniesNameTabs = ({ setCurrentCompany, value, setValue, isAddable}: CompaniesNameTabsProps) => {
+const CompaniesNameTabs = ({ setCurrentCompany, value, setValue,isAddable }: CompaniesNameTabsProps) => {
   const dispatch = useDispatch();
   const companies = useSelector((state: RootState) => state.company.companies || []);
   
@@ -38,7 +38,7 @@ const CompaniesNameTabs = ({ setCurrentCompany, value, setValue, isAddable}: Com
       {companies.map((tab, index) => (
         <Tab key={tab.value} label={tab.label} value={tab.value.toString()} onClick={onCompanyChangeHandler}/> 
       ))}
-      {isAddable && <FormDialog onAdd={onAddNewCompanyHandler} />}
+      {isAddable ? <FormDialog onAdd={onAddNewCompanyHandler} /> : null}
   </TabList>
   );
 };

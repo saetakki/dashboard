@@ -56,7 +56,6 @@ const TeamSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
 
 
   return (
-
     <BlankCard>
       <TableContainer>
         <Table
@@ -72,6 +71,7 @@ const TeamSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
                   {header}
                 </TableCell>
               ))}
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -80,7 +80,6 @@ const TeamSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
                 <TableCell align="center" key={key}>{target[key]}</TableCell>
               ))}
             </TableRow>
-
           </TableBody>
         </Table>
       </TableContainer>

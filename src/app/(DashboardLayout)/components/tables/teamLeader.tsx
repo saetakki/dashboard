@@ -47,15 +47,9 @@ const TeamLeader: React.FC<TeamLeaderProps> = ({ company, team })=> {
   const target = teamLeaders?.filter((leader) => leader.팀 === team);
 
   return (
-
     <BlankCard>
       <TableContainer>
-        <Table
-          aria-label="simple table"
-          sx={{
-            whiteSpace: 'nowrap',
-          }}
-        >
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               {leaderKeys.map((header) => (
@@ -63,17 +57,17 @@ const TeamLeader: React.FC<TeamLeaderProps> = ({ company, team })=> {
                   {header}
                 </TableCell>
               ))}
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-          {target?.map((leader) => (
-            <TableRow key={leader.관리번호}>
-              {leaderKeys.map((key) => (
-                <TableCell align="center" key={key}>{leader[key]}</TableCell>
-              ))}
-            </TableRow>
-          ))}
-
+            {target?.map((leader) => (
+              <TableRow key={leader.관리번호}>
+                {leaderKeys.map((key) => (
+                  <TableCell align="center" key={key}>{leader[key]}</TableCell>
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

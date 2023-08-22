@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import { useRouter } from 'next/navigation'
 import {
   TableContainer,
   Table,
@@ -12,7 +13,7 @@ import {
 
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import Link from 'next/link'
 import BlankCard from '../shared/BlankCard';
 import { basicsTableData, TableType } from './tableData';
 
@@ -62,7 +63,11 @@ const IndividualSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
 
   const initialData = useSelector((state: RootState) => state.company.employees[company] || []);
   const [individualSalesDatas, setIndividualSalesDatas] = React.useState<IndividualSalesData[]>(initialData);
-  
+  const exposeSalaryKeys = ['관리번호','이름','총신청','상담전','상담완료','상담거절','성공','실패','대출','연구소','벤처','메인','경정','총매출','고유URL','활성화'];
+  const target = individualSalesDatas?.filter((person) => String(person.팀) === team);
+  const router = useRouter();
+
+
   const toggleActivation = (id: number) => {
     const updatedData = individualSalesDatas.map(person => {
       if (person.관리번호 === id) {
@@ -73,17 +78,11 @@ const IndividualSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
     setIndividualSalesDatas(updatedData);
   };
 
-  const exposeSalaryKeys = ['관리번호','이름','총신청','상담전','상담완료','상담거절','성공','실패','대출','연구소','벤처','메인','경정','총매출','고유URL','활성화'];
-
-  const target = individualSalesDatas?.filter((person) => String(person.팀) === team);
-
-  const onToggleActivateHandler = (id:number) => {
-    console.log(id)
+  const onRowClickHandler = (name: string) => {
+    router.push(`report/${name}`)
   }
 
-
   return (
-
     <BlankCard>
       <TableContainer>
         <Table
@@ -102,17 +101,21 @@ const IndividualSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
             </TableRow>
           </TableHead>
           <TableBody>
-            {target.map((person) => (
-              <TableRow key={person.관리번호}>
+          {target.map((person) => (
+              <TableRow 
+                key={person.관리번호} 
+                onClick={() => onRowClickHandler(person.이름)} // 행 클릭 이벤트를 추가합니다.
+                style={{ cursor: 'pointer' }} // 마우스 커서가 포인터 형태가 되도록 스타일을 추가합니다.
+              >
                 {exposeSalaryKeys.map((key) => {
-                  if (key === "고유URL") {
-                    if (person.활성화) {  // "활성화"가 true일 때 숨김처리
-                      return <TableCell align="center" key={key}>숨김</TableCell>;
-                    }
-                    return <TableCell align="center" key={key}>{person[key as keyof IndividualSalesData]}</TableCell>;
-                  } else if (key === "활성화") {
-                    return (
-                      <TableCell align="center" key={key}>
+                  let content;
+
+                  switch (key) {
+                    case "고유URL":
+                      content = person.활성화 ? person[key] : '숨김';
+                      break;
+                    case "활성화":
+                      content = (
                         <FormControlLabel
                           control={
                             <Checkbox
@@ -123,14 +126,14 @@ const IndividualSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
                           }
                           label={person.활성화 ? 'on' : 'off'}
                         />
-                      </TableCell>
-                    );
+                      );
+                      break;
+                    default:
+                      content = String(person[key as keyof IndividualSalesData]);
+                      break;
                   }
-                  return (
-                    <TableCell align="center" key={key}>
-                      {String(person[key as keyof IndividualSalesData])}
-                    </TableCell>
-                  );
+
+                  return <TableCell align="center" key={key}>{content}</TableCell>;
                 })}
               </TableRow>
             ))}
