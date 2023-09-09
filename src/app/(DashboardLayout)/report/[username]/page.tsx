@@ -1,5 +1,4 @@
-'use client'
-
+'use client';
 import * as React from 'react';
 import {
   Typography,
@@ -17,227 +16,164 @@ import {
   TableRow,
   Stack,
   Grid,
+  Switch,
+  List,
+  Checkbox,
+  Radio,
 } from '@mui/material';
-import Breadcrumb from '@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcrumb';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import ParentCard from '@/app/(DashboardLayout)/components/shared/ParentCard';
 import BlankCard from '@/app/(DashboardLayout)/components/shared/BlankCard';
-
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import useValidUser from '../../components/dataFetching/useValidateUser';
 import { usePathname, useSearchParams } from 'next/navigation';
 import GeneralTab from '@/app/(DashboardLayout)/ui-components/tabs/GeneralTab';
-import BaseTable from '../../components/tables/baseTable';
-
-
-function createData(
-  imgsrc?: string,
-  pname?: string,
-  customer?: string,
-  inventory?: boolean,
-  price?: number,
-  items?: string,
-) {
-  return {
-    imgsrc,
-    pname,
-    customer,
-    inventory,
-    price,
-    items,
-    history: [
-      { date: '2021-02-05', customerId: '15202410', price: 250, amount: 3 },
-      { date: '2021-02-02', customerId: 'Anonymous', price: 600, amount: 1 },
-    ],
-  };
-}
-
-
-function Row(props: { row: ReturnType<typeof createData> }) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-  const pathName = decodeURI(usePathname().split('/')[2]);
-  const BCrumb = [
-    {
-      to: '/',
-      title: 'Home',
-    },
-    {
-      title: `${pathName}`.split('/')[3],
-    },
-  ];
-
-
-  return (
-    <>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Avatar
-              src={row.imgsrc}
-              alt={row.imgsrc}
-              sx={{
-                width: 90,
-                height: 70,
-                borderRadius: '10px',
-              }}
-            />
-            <Typography variant="h6" fontWeight="600">
-              {row.pname}
-            </Typography>
-          </Stack>
-        </TableCell>
-        <TableCell>
-          <Typography color="textSecondary" variant="h6">
-            {row.customer}
-          </Typography>
-        </TableCell>
-        <TableCell>
-          <Chip
-            size="small"
-            label={row.inventory ? 'In Stock' : 'Out of Stock'}
-            color={row.inventory ? 'success' : 'error'}
-            sx={{ borderRadius: '6px' }}
-          />
-        </TableCell>
-        <TableCell>
-          <Typography color="textSecondary" variant="h6" fontWeight="400">
-            ${row.price}
-          </Typography>
-        </TableCell>
-        <TableCell>
-          <Typography color="textSecondary" fontWeight="400">
-            {row.items}
-          </Typography>
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell sx={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography
-                gutterBottom
-                variant="h5"
-                sx={{
-                  mt: 2,
-                  backgroundColor: (theme) => theme.palette.grey.A200,
-                  p: '5px 15px',
-                  color: (theme) =>
-                    `${
-                      theme.palette.mode === 'dark'
-                        ? theme.palette.grey.A200
-                        : 'rgba(0, 0, 0, 0.87)'
-                    }`,
-                }}
-              >
-                History
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="h6">Date</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="h6">Customer</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="h6">Amount</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="h6">Total price ($)</Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow: any) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell>
-                        <Typography color="textSecondary" fontWeight="400">
-                          {historyRow.date}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography color="textSecondary" fontWeight="400">
-                          {historyRow.customerId}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography color="textSecondary" fontWeight="400">
-                          {historyRow.amount}
-                        </Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Typography fontWeight="600">
-                          {Math.round(historyRow.amount * historyRow.price * 100) / 100}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </>
-  );
-}
-
-const rows = [
-  createData("/images/products/s1.jpg", 'Good butterscotch ice-cream', 'Sunil Joshi', true, 250, '2'),
-  createData("/images/products/s2.jpg", 'Supreme fresh tomato available', 'John Deo', false, 450, '1'),
-  createData("/images/products/s3.jpg", 'Red color candy from Gucci', 'Andrew McDownland', false, 150, '2'),
-  createData("/images/products/s4.jpg", 'Stylish night lamp for night', 'Christopher Jamil', true, 550, '6'),
-];
-
-
-
+import { FormControlLabel } from '@mui/material';
 
 const CollapsibleTable = () => {
+  const checkboxes = ['진행여부', '대출', '연구소', '벤처', '메인', '경정'];
+
+  const [checkedState, setCheckedState] = React.useState<{
+    [key: string]: string | null;
+  }>({
+    진행여부: null,
+    대출: null,
+    연구소: null,
+    벤처: null,
+    메인: null,
+    경정: null,
+  });
+  const [isOnProgress, setIsOnProgress] = React.useState([]);
+  const [selected, setSelected] = React.useState<string | null>('상담전');
+
+  const personalSalesTab = [
+    '관리번호',
+    '상호',
+    '팀장',
+    '번호',
+    '도메인',
+    '서브도메인 수',
+    '회원 수',
+    '아이디',
+    '비밀번호',
+  ];
+  const personalSalesData = [
+    '1',
+    '1팀',
+    '이동규',
+    '010-1234-5678',
+    'www.naver.com',
+    '3',
+    '3',
+    'id',
+    'pw',
+  ];
+
+  const customerDataTab = [
+    '업체명',
+    '업체대표',
+    '휴대폰',
+    '업태',
+    '사업자',
+    '업력',
+    '연매출',
+    '4대보험',
+    '인증항목',
+    '사업자소유여부',
+  ];
+
+  const myTotalSalesSummaryTab = [
+    '전체신청',
+    '상담전',
+    '상담완료',
+    '상담거절',
+    '성공',
+    '실패',
+    '대출',
+    '연구소',
+    '벤처',
+    '메인',
+    '경정',
+    '총 매출(천원)',
+  ];
+  const myTotalSalesSummaryCnt = [
+    120, 100, 70, 30, 65, 5, 50, 20, 15, 60, 10, 150000,
+  ];
 
   const pathName = decodeURI(usePathname().split('/')[2]);
+  const [open, setOpen] = React.useState(false);
 
-  {/* 더미 데이터 */}
-  const personalSalesTab = ['관리번호','상호','팀장','번호','도메인','서브도메인 수', '회원 수', '아이디','비밀번호']
-  const personalSalesData = ['1','1팀','이동규','010-1234-5678','www.naver.com','3','3','id','pw']
-
-  const myTotalSalesSummaryTab =['전체신청','상담전','상담완료','상담거절','성공','실패','대출',"연구소","벤처","메인","경정", "총 매출(천원)"]
-  const myTotalSalesSummaryCnt = Array.from({length: myTotalSalesSummaryTab.length}, () => Math.floor(Math.random() * 100))
+  {
+    /* 더미 데이터 */
+  }
 
   const customerInfoTab = [
-    "고객정보",
-    "업체명",
-    "업체대표",
-    "휴대폰",
-    "업태",
-    "사업자",
-    "업력",
-    "연매출",
-    "4대보험",
-    "인증항목",
-    "사업자소유여부",
-  ]
+    '업체명',
+    '업체대표',
+    '휴대폰',
+    '업태',
+    '사업자',
+    '업력',
+    '연매출',
+    '4대보험',
+    '인증항목',
+    '사업자소유여부',
+  ];
 
+  const customerInfoData = [
+    [
+      'test1',
+      '미래자동차',
+      '오태식',
+      '010-1234-5678',
+      '정보서비스업',
+      '법인사업자',
+      '10년 이상',
+      '10억 이상',
+      '5인 이상',
+      '벤처기업, 이노비즈, 특허',
+      '자가',
+    ],
+    [
+      'test2',
+      '미래자동차',
+      '오태식',
+      '010-1234-5678',
+      '정보서비스업',
+      '법인사업자',
+      '10년 이상',
+      '10억 이상',
+      '5인 이상',
+      '벤처기업, 이노비즈, 특허',
+      '자가',
+    ],
+  ];
 
+  const historyTab = [
+    '상담전',
+    '상담완료',
+    '상담거절',
+    '성공',
+    '실패',
+    '진행여부',
+    '대출',
+    '연구소',
+    '벤처',
+    '메인',
+    '경정',
+    '총 매출(천원)',
+  ];
 
-
-
-  return(
-  <PageContainer title="Collapsible Table" description="this is Collapsible Table">
-    <ParentCard title={`${pathName}의  영업 현황`}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+  return (
+    <PageContainer
+      title='Collapsible Table'
+      description='this is Collapsible Table'
+    >
+      <ParentCard title={`${pathName}의  영업 현황`}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
             <BlankCard>
               <TableContainer component={Paper}>
                 <Table
-                  aria-label="collapsible table"
+                  aria-label='collapsible table'
                   sx={{
                     whiteSpace: {
                       xs: 'nowrap',
@@ -246,78 +182,365 @@ const CollapsibleTable = () => {
                   }}
                 >
                   <TableHead>
-                    <GeneralTab 
-                    arr={personalSalesTab} />
+                    <GeneralTab arr={personalSalesTab} />
                   </TableHead>
                   <TableBody>
-                    <GeneralTab arr={personalSalesData}/>
-                    {/* {rows.map((row) => (
-                      <Row key={row.pname} row={row} />
-                    ))} */}
+                    <GeneralTab arr={personalSalesData} />
                   </TableBody>
                 </Table>
               </TableContainer>
             </BlankCard>
+          </Grid>
+          <Grid item xs={12}>
+            <Box>
+              <BlankCard>
+                <TableContainer component={Paper}>
+                  <Table
+                    aria-label='collapsible table'
+                    sx={{
+                      whiteSpace: {
+                        xs: 'nowrap',
+                        sm: 'unset',
+                      },
+                    }}
+                  >
+                    <TableHead>
+                      <GeneralTab arr={myTotalSalesSummaryTab} />
+                    </TableHead>
+                    <TableBody>
+                      <GeneralTab arr={myTotalSalesSummaryCnt} />
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </BlankCard>
+            </Box>
+          </Grid>
+          {customerInfoData.map((item, idx) => {
+            return (
+              <Grid item xs={12} key={item[0]}>
+                <Box>
+                  <BlankCard>
+                    <div style={{ display: 'flex' }}>
+                      {selected === '상담전' && (
+                        <div
+                          style={{
+                            display: 'flex',
+                            textAlign: 'center',
+                          }}
+                        >
+                          <span
+                            style={{
+                              backgroundColor: '#0bb2fb',
+                              writingMode: 'vertical-rl',
+                              textOrientation: 'upright',
+                              color: 'white',
+                              fontWeight: 'bold',
+                            }}
+                          >
+                            신규
+                          </span>
+                        </div>
+                      )}
+                      <TableContainer component={Paper}>
+                        <Table
+                          aria-label='collapsible table'
+                          sx={{
+                            whiteSpace: {
+                              xs: 'nowrap',
+                              sm: 'unset',
+                            },
+                          }}
+                        >
+                          <TableHead>
+                            <GeneralTab arr={customerInfoTab} />
+                          </TableHead>
+                          <TableHead>
+                            <GeneralTab arr={item} />
+                          </TableHead>
+                        </Table>
+                        <Table
+                          aria-label='collapsible table'
+                          sx={{
+                            whiteSpace: {
+                              xs: 'nowrap',
+                              sm: 'unset',
+                            },
+                          }}
+                        >
+                          <TableHead>
+                            <GeneralTab arr={historyTab} />
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              {historyTab.map((item, idx) => {
+                                if (idx >= 0 && idx <= 4) {
+                                  // 체크박스 1개 형태
+                                  return (
+                                    <TableCell key={idx} align='center'>
+                                      <Checkbox
+                                        color='primary'
+                                        checked={selected === item}
+                                        onChange={() => setSelected(item)}
+                                      />
+                                    </TableCell>
+                                  );
+                                } else if (idx >= 5 && idx <= 10) {
+                                  // 체크박스 2개 형태
+                                  return (
+                                    <TableCell key={item} align='center'>
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          flexDirection: 'column-reverse',
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        }}
+                                      >
+                                        <FormControlLabel
+                                          sx={{ margin: 'auto' }}
+                                          control={
+                                            <Checkbox
+                                              checked={
+                                                checkedState[item] === '진행중'
+                                              }
+                                              onChange={() => {
+                                                setCheckedState((prev) => ({
+                                                  ...prev,
+                                                  [item]: !prev[item]
+                                                    ? '진행중'
+                                                    : null,
+                                                }));
+                                              }}
+                                            />
+                                          }
+                                          label=''
+                                        />
+                                        <span
+                                          style={{
+                                            fontSize: '12px',
+                                            marginBottom: '4px',
+                                            textAlign: 'left',
+                                          }}
+                                        >
+                                          진행중
+                                        </span>
+                                      </div>
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          flexDirection: 'column',
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        }}
+                                      >
+                                        <FormControlLabel
+                                          sx={{ margin: 'auto' }}
+                                          control={
+                                            <Checkbox
+                                              checked={
+                                                checkedState[item] === '완료'
+                                              }
+                                              onChange={() => {
+                                                setCheckedState((prev) => ({
+                                                  ...prev,
+                                                  [item]: !prev[item]
+                                                    ? '완료'
+                                                    : null,
+                                                }));
+                                              }}
+                                            />
+                                          }
+                                          label=''
+                                        />
+                                        <span
+                                          style={{
+                                            fontSize: '12px',
+                                            marginTop: '4px',
+                                            textAlign: 'left',
+                                          }}
+                                        >
+                                          완료
+                                        </span>
+                                      </div>
+                                    </TableCell>
+                                  );
+                                }
+                                return null;
+                              })}
+                              <TableCell align='center'>23989</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </div>
+                  </BlankCard>
+                </Box>
+              </Grid>
+            );
+          })}
+          {/* <Grid item xs={12}>
+            <Box>
+              <BlankCard>
+                <div style={{ display: 'flex' }}>
+                  {selected === '상담전' && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        textAlign: 'center',
+                      }}
+                    >
+                      <span
+                        style={{
+                          backgroundColor: '#0bb2fb',
+                          writingMode: 'vertical-rl',
+                          textOrientation: 'upright',
+                          color: 'white',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        신규
+                      </span>
+                    </div>
+                  )}
+                  <TableContainer component={Paper}>
+                    <Table
+                      aria-label='collapsible table'
+                      sx={{
+                        whiteSpace: {
+                          xs: 'nowrap',
+                          sm: 'unset',
+                        },
+                      }}
+                    >
+                      <TableHead>
+                        <GeneralTab arr={customerInfoTab} />
+                      </TableHead>
+                      <TableHead>
+                        <GeneralTab arr={customerInfoData[0]} />
+                      </TableHead>
+                    </Table>
+                    <Table
+                      aria-label='collapsible table'
+                      sx={{
+                        whiteSpace: {
+                          xs: 'nowrap',
+                          sm: 'unset',
+                        },
+                      }}
+                    >
+                      <TableHead>
+                        <GeneralTab arr={historyTab} />
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          {historyTab.map((item, idx) => {
+                            if (idx >= 0 && idx <= 4) {
+                              // 체크박스 1개 형태
+                              return (
+                                <TableCell key={idx} align='center'>
+                                  <Checkbox
+                                    color='primary'
+                                    checked={selected === item}
+                                    onChange={() => setSelected(item)}
+                                  />
+                                </TableCell>
+                              );
+                            } else if (idx >= 5 && idx <= 10) {
+                              // 체크박스 2개 형태
+                              return (
+                                <TableCell key={item} align='center'>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      flexDirection: 'column-reverse',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    <FormControlLabel
+                                      sx={{ margin: 'auto' }}
+                                      control={
+                                        <Checkbox
+                                          checked={
+                                            checkedState[item] === '진행중'
+                                          }
+                                          onChange={() => {
+                                            setCheckedState((prev) => ({
+                                              ...prev,
+                                              [item]: !prev[item]
+                                                ? '진행중'
+                                                : null,
+                                            }));
+                                          }}
+                                        />
+                                      }
+                                      label=''
+                                    />
+                                    <span
+                                      style={{
+                                        fontSize: '12px',
+                                        marginBottom: '4px',
+                                        textAlign: 'left',
+                                      }}
+                                    >
+                                      진행중
+                                    </span>
+                                  </div>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    <FormControlLabel
+                                      sx={{ margin: 'auto' }}
+                                      control={
+                                        <Checkbox
+                                          checked={
+                                            checkedState[item] === '완료'
+                                          }
+                                          onChange={() => {
+                                            setCheckedState((prev) => ({
+                                              ...prev,
+                                              [item]: !prev[item]
+                                                ? '완료'
+                                                : null,
+                                            }));
+                                          }}
+                                        />
+                                      }
+                                      label=''
+                                    />
+                                    <span
+                                      style={{
+                                        fontSize: '12px',
+                                        marginTop: '4px',
+                                        textAlign: 'left',
+                                      }}
+                                    >
+                                      완료
+                                    </span>
+                                  </div>
+                                </TableCell>
+                              );
+                            }
+                            return null;
+                          })}
+                          <TableCell align='center'>23989</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
+              </BlankCard>
+            </Box>
+          </Grid> */}
         </Grid>
-        <Grid item xs={12}>
-          <Box>
-            <BlankCard>
-              <TableContainer component={Paper}>
-                <Table
-                  aria-label="collapsible table"
-                  sx={{
-                    whiteSpace: {
-                      xs: 'nowrap',
-                      sm: 'unset',
-                    },
-                  }}
-                >
-                  <TableHead>
-                    <GeneralTab 
-                    arr={myTotalSalesSummaryTab} />
-                  </TableHead>
-                  <TableBody>
-                    <GeneralTab arr={myTotalSalesSummaryCnt}/>
-                    {/* {rows.map((row) => (
-                      <Row key={row.pname} row={row} />
-                    ))} */}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </BlankCard>
-          </Box>
-      </Grid>
-      <Grid item xs={12}>
-          <Box>
-            <BlankCard>
-              <TableContainer component={Paper}>
-                <Table
-                  aria-label="collapsible table"
-                  sx={{
-                    whiteSpace: {
-                      xs: 'nowrap',
-                      sm: 'unset',
-                    },
-                  }}
-                >
-                  <TableHead>
-                    <GeneralTab 
-                    arr={customerInfoTab} />
-                  </TableHead>
-                  <TableBody>
-                    {/* {rows.map((row) => (
-                      <Row key={row.pname} row={row} />
-                    ))} */}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </BlankCard>
-          </Box>
-      </Grid>
-    </Grid>
-    </ParentCard>
-  </PageContainer>
-  )
+      </ParentCard>
+    </PageContainer>
+  );
 };
 
 export default CollapsibleTable;

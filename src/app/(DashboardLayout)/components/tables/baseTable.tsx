@@ -3,9 +3,9 @@
 import { Box, Grid } from '@mui/material';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import ParentCard from '@/app/(DashboardLayout)/components/shared/ParentCard';
-import TeamLeader from './teamLeader';
-import TeamSalary from './teamSalary';
 import IndividualSalary from './individualSalary';
+import TeamLeader from './TeamLeader'
+import TeamSalary from './TeamSalary'
 
 
 

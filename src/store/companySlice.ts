@@ -43,6 +43,7 @@ type SalesData = {
 
 type IndividualSalesData = {
   팀: number;
+  최근신청: string;
   관리번호: number;
   이름: string;
   총신청: number;
@@ -84,6 +85,7 @@ const initialState: CompanyState = {
     한화: [
       {
         팀: 1,
+        최근신청: '07.31. 12:34:56',
         관리번호: 1,
         이름: '이한솔',
         총신청: 500,
@@ -103,6 +105,7 @@ const initialState: CompanyState = {
       },
       {
         팀: 1,
+        최근신청: '07.31. 13:45:12',
         관리번호: 2,
         이름: 'test',
         총신청: 300,
@@ -122,6 +125,7 @@ const initialState: CompanyState = {
       },
       {
         팀: 1,
+        최근신청: '08.05. 23:12:54',
         관리번호: 3,
         이름: 'test2',
         총신청: 50,
@@ -143,6 +147,7 @@ const initialState: CompanyState = {
     삼일회계: [
       {
         팀: 1,
+        최근신청: '08.15. 13:12:54',
         관리번호: 1,
         이름: '김영희',
         총신청: 80,
@@ -162,6 +167,7 @@ const initialState: CompanyState = {
       },
       {
         팀: 2,
+        최근신청: '08.18. 12:12:54',
         관리번호: 2,
         이름: '이철수',
         총신청: 75,
@@ -354,6 +360,7 @@ const companySlice = createSlice({
 
       const newSalesData: IndividualSalesData = {
         팀: 0,
+        최근신청: '',
         관리번호: Math.random(), // 임의의 값 - 실제로는 다른 방식으로 관리번호를 할당해야 합니다.
         이름: action.payload.name,
         총신청: 0,

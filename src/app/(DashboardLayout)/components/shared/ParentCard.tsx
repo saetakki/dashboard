@@ -5,9 +5,9 @@ import { useSelector } from '@/store/hooks';
 import { AppState } from '@/store/store';
 
 type Props = {
-  title?: string;
+  title: string;
   footer?: string | JSX.Element;
-  children: JSX.Element;
+  children?: JSX.Element;
 };
 
 const ParentCard = ({ title, children, footer }: Props) => {
@@ -18,7 +18,10 @@ const ParentCard = ({ title, children, footer }: Props) => {
 
   return (
     <Card
-      sx={{ padding: 0, border: !customizer.isCardShadow ? `1px solid ${borderColor}` : 'none'}}
+      sx={{
+        padding: 0,
+        border: !customizer.isCardShadow ? `1px solid ${borderColor}` : 'none',
+      }}
       elevation={customizer.isCardShadow ? 9 : 0}
       variant={!customizer.isCardShadow ? 'outlined' : undefined}
     >

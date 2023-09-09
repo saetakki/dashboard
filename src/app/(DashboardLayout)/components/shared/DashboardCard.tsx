@@ -1,5 +1,7 @@
-import React from "react";
-import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
+import { Card, CardContent, Typography, Stack, Box } from '@mui/material';
+import { useSelector } from '@/store/hooks';
+import { AppState } from '@/store/store';
 
 type Props = {
   title?: string;
@@ -24,34 +26,43 @@ const DashboardCard = ({
   headsubtitle,
   middlecontent,
 }: Props) => {
+  const customizer = useSelector((state: AppState) => state.customizer);
+
+  const theme = useTheme();
+  const borderColor = theme.palette.divider;
+
   return (
-    <Card sx={{ padding: 0 }} elevation={9} variant={undefined}>
+    <Card
+      sx={{ padding: 0, border: !customizer.isCardShadow ?  `1px solid ${borderColor}` : 'none' }}
+      elevation={customizer.isCardShadow ? 9 : 0}
+      variant={!customizer.isCardShadow ? 'outlined' : undefined}
+    >
       {cardheading ? (
         <CardContent>
-          <Typography variant="h3">{headtitle}</Typography>
+          <Typography variant="h4">{headtitle}</Typography>
           <Typography variant="subtitle2" color="textSecondary">
             {headsubtitle}
           </Typography>
         </CardContent>
       ) : (
-        <CardContent sx={{ p: "30px" }}>
+        <CardContent sx={{p: "30px"}}>
           {title ? (
             <Stack
               direction="row"
               spacing={2}
               justifyContent="space-between"
-              alignItems={"center"}
+              alignItems={'center'}
               mb={3}
             >
               <Box>
-                {title ? <Typography variant="h3">{title}</Typography> : ""}
+                {title ? <Typography variant="h3">{title}</Typography> : ''}
 
                 {subtitle ? (
                   <Typography variant="subtitle2" color="textSecondary">
                     {subtitle}
                   </Typography>
                 ) : (
-                  ""
+                  ''
                 )}
               </Box>
               {action}

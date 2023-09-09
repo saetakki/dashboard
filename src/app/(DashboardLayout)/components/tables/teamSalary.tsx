@@ -7,20 +7,10 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Avatar,
-  Typography,
   TableHead,
-  Chip,
-  Box,
-  AvatarGroup,
 } from '@mui/material';
 import BlankCard from '../shared/BlankCard';
-import { basicsTableData, TableType } from './tableData';
-import { Stack } from '@mui/system';
-import TableHeaderTab from '@/app/(DashboardLayout)/ui-components/tabs/TableHeaderTab';
-import { selectCompanies } from '@/store/companySlice';
 
-const basics: TableType[] = basicsTableData;
 
 interface TeamSalaryProps {
   company: string;
@@ -46,7 +36,6 @@ const TeamSalary: React.FC<TeamSalaryProps> = ({ company, team })=> {
     총매출: number;
     [key: string]: number;
   };
-
 
 
   const salesData: SalesData[] = useSelector((state: RootState) => state.company.salesData[company]);

@@ -8,6 +8,7 @@ import {
   TableCell,
   TableBody,
   TableHead,
+  Button,
 } from '@mui/material';
 
 import Checkbox from '@mui/material/Checkbox';
@@ -17,8 +18,6 @@ import BlankCard from '../shared/BlankCard';
 import { basicsTableData, TableType } from './tableData';
 import { selectCompanies } from '@/store/companySlice';
 
-
-
 const basics: TableType[] = basicsTableData;
 
 interface TeamSalaryProps {
@@ -26,9 +25,9 @@ interface TeamSalaryProps {
 }
 
 const AllIndividualSalary: React.FC<TeamSalaryProps> = ({ company }) => {
-
   type IndividualSalesData = {
-    팀: number,
+    팀: number;
+    최근신청: string;
     관리번호: number;
     이름: string;
     총신청: number;
@@ -48,22 +47,33 @@ const AllIndividualSalary: React.FC<TeamSalaryProps> = ({ company }) => {
     [key: string]: number | string | boolean;
   };
 
-
-
   // const initialData = useSelector((state: RootState) => state.company.employees[company] || []);
   // const [individualSalesDatas, setIndividualSalesDatas] = React.useState<IndividualSalesData[]>(initialData);
-  const target: IndividualSalesData[] = useSelector((state: RootState) => state.company.employees[company]) || [];
-  const exposeSalaryKeys: (keyof IndividualSalesData)[] = ['관리번호','이름','총신청','상담전','상담완료','상담거절','성공','실패','대출','연구소','벤처','메인','경정','총매출'];
-
-
-
+  const target: IndividualSalesData[] =
+    useSelector((state: RootState) => state.company.employees[company]) || [];
+  const exposeSalaryKeys: (keyof IndividualSalesData)[] = [
+    '최근신청',
+    '관리번호',
+    '이름',
+    '총신청',
+    '상담전',
+    '상담완료',
+    '상담거절',
+    '성공',
+    '실패',
+    '대출',
+    '연구소',
+    '벤처',
+    '메인',
+    '경정',
+    '총매출',
+  ];
 
   return (
-
     <BlankCard>
       <TableContainer>
         <Table
-          aria-label="simple table"
+          aria-label='simple table'
           sx={{
             whiteSpace: 'nowrap',
           }}
@@ -71,21 +81,28 @@ const AllIndividualSalary: React.FC<TeamSalaryProps> = ({ company }) => {
           <TableHead>
             <TableRow>
               {exposeSalaryKeys.map((header) => (
-                <TableCell key={header} align="center">
+                <TableCell key={header} align='center'>
                   {header}
                 </TableCell>
               ))}
+              <TableCell align='center'>정산</TableCell>
             </TableRow>
             {target?.map((leader) => (
-            <TableRow key={leader.관리번호}>
-              {exposeSalaryKeys.map((key) => (
-                <TableCell align="center" key={key}>{leader[key]}</TableCell>
-              ))}
-            </TableRow>
-          ))}
+              <TableRow key={leader.관리번호}>
+                {exposeSalaryKeys.map((key) => (
+                  <TableCell align='center' key={key}>
+                    {leader[key]}
+                  </TableCell>
+                ))}
+                <TableCell align='center'>
+                  <Button variant='contained' color='primary'>
+                    정산
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableHead>
-          <TableBody>
-          </TableBody>
+          <TableBody></TableBody>
         </Table>
       </TableContainer>
     </BlankCard>
