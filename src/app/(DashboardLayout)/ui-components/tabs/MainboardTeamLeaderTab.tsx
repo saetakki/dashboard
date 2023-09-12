@@ -26,13 +26,12 @@ type CompanyTabsProps = {
 const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
   type Leader = {
     [key: string]: string;
-    관리번호: string;
-    팀: string;
-    팀장: string;
+    팀명: string;
+    리더: string;
     번호: string;
     도메인: string;
-    서브도메인수: string;
-    회원수: string;
+    마케터수: string;
+    신청자: string;
     아이디: string;
     비밀번호: string;
   };
@@ -43,13 +42,12 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
   );
   const [open, setOpen] = useState(false);
   const [newLeader, setNewLeader] = useState<Leader>({
-    관리번호: '',
-    팀: '',
-    팀장: '',
+    팀명: '',
+    리더: '',
     번호: '',
     도메인: '',
-    서브도메인수: '',
-    회원수: '',
+    마케터수: '',
+    신청자: '',
     아이디: '',
     비밀번호: '',
   });
@@ -62,35 +60,21 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     setOpen(!open);
   };
 
-  const newManagingNumber = () => {
-    const maxExistingId =
-      teamLeaders?.reduce((maxId, leader) => {
-        const currentId = parseInt(leader.관리번호, 10);
-        return currentId > maxId ? currentId : maxId;
-      }, 0) || 0;
-
-    // 최대값에서 1 더한 값을 새로운 팀 리더의 관리번호로 설정
-    const newLeaderId = (maxExistingId + 1).toString();
-    return newLeaderId;
-  };
-
   const handleAddData = () => {
     const leaderData: TeamLeader = {
       ...newLeader,
     };
-    leaderData.관리번호 = newManagingNumber();
     dispatch(addTeamLeader({ companyValue: tabs, leader: leaderData }));
     setOpen(false);
   };
 
   const headers = [
-    '관리번호',
-    '팀',
-    '팀장',
+    '팀명',
+    '리더',
     '번호',
     '도메인',
-    '서브도메인수',
-    '회원수',
+    '마케터수',
+    '신청자',
     '아이디',
     '비밀번호',
   ];
@@ -106,9 +90,12 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
             <TableHead>
               <TableRow>
                 {headers.map((header) => (
-                  <TableCell key={header}>{header}</TableCell>
+                  <TableCell key={header} sx={{ textAlign: 'center' }}>
+                    {header}
+                  </TableCell>
                 ))}
-                <TableCell>정보수정</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>정보수정</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>삭제</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -116,13 +103,22 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
                 ? teamLeaders.map((row: any, index: number) => (
                     <TableRow key={index}>
                       {headers.map((header, cellIndex) => (
-                        <TableCell key={cellIndex}>
+                        <TableCell key={cellIndex} sx={{ textAlign: 'center' }}>
                           {String(row[header])}
                         </TableCell>
                       ))}
-                      <TableCell>
-                        <Button variant='contained' color='secondary'>
+                      <TableCell sx={{ textAlign: 'center' }}>
+                        <Button variant='contained' color='primary'>
                           정보 수정
+                        </Button>
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Button variant='contained' color='secondary'>
+                          삭제
                         </Button>
                       </TableCell>
                     </TableRow>

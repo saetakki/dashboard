@@ -1,5 +1,6 @@
 'use client';
 import * as XLSX from 'xlsx';
+import '../global.css';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';

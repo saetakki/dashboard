@@ -20,7 +20,7 @@ const GeneralTab: React.FC<GeneralTabProps> = ({ arr, children, style }) => {
           <TableCell
             className='MuiTableRow-root'
             key={idx}
-            sx={{ width: cellWidth, textAlign: 'center' }}
+            sx={{ fontSize: '18px', width: cellWidth, textAlign: 'center' }}
           >
             {item}
           </TableCell>

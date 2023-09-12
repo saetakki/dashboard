@@ -13,13 +13,12 @@ type Employee = {
 };
 
 type TeamLeader = {
-  관리번호: string;
-  팀: string;
-  팀장: string;
+  팀명: string;
+  리더: string;
   번호: string;
   도메인: string;
-  서브도메인수: string;
-  회원수: string;
+  마케터수: string;
+  신청자: string;
   아이디: string;
   비밀번호: string;
 };
@@ -192,30 +191,27 @@ const initialState: CompanyState = {
   teamLeadersByCompany: {
     한화: [
       {
-        관리번호: '1',
-        팀: '1',
-        팀장: '홍길동',
+        팀명: '1',
+        리더: '홍길동',
         번호: '010-1234-5678',
         도메인: 'example.com',
-        서브도메인수: '5',
-        회원수: '100',
+        마케터수: '5',
+        신청자: '100',
         아이디: 'user001',
         비밀번호: 'pass001',
       },
       {
-        관리번호: '2',
-        팀: '2',
-        팀장: '이동규',
+        팀명: '2',
+        리더: '이동규',
         번호: '010-2222-2222',
         도메인: 'example.com',
-        서브도메인수: '5',
-        회원수: '100',
+        마케터수: '5',
+        신청자: '100',
         아이디: 'user002',
         비밀번호: 'pass002',
       },
       {
-        관리번호: '3',
-        팀: '3',
+        팀명: '3',
         팀장: '김진기',
         번호: '010-3333-3333',
         도메인: 'example.com',
@@ -227,24 +223,22 @@ const initialState: CompanyState = {
     ],
     삼일회계: [
       {
-        관리번호: '1',
-        팀: '1',
-        팀장: 'aaa',
+        팀명: '1',
+        리더: 'aaa',
         번호: '010-1111-1111',
         도메인: 'example2.com',
-        서브도메인수: '10',
-        회원수: '124',
+        마케터수: '10',
+        신청자: '124',
         아이디: 'user011',
         비밀번호: 'pass011',
       },
       {
-        관리번호: '2',
-        팀: '2',
-        팀장: 'bbb',
+        팀명: '2',
+        리더: 'bbb',
         번호: '010-2222-2222',
         도메인: 'example2.com',
-        서브도메인수: '53',
-        회원수: '1030',
+        마케터수: '53',
+        신청자: '1030',
         아이디: 'user022',
         비밀번호: 'pass022',
       },
@@ -255,7 +249,6 @@ const initialState: CompanyState = {
   salesData: {
     한화: [
       {
-        관리번호: 1,
         팀: 1,
         전체신청: 2980,
         상담전: 7500,
@@ -271,7 +264,6 @@ const initialState: CompanyState = {
         총매출: 30000,
       },
       {
-        관리번호: 2,
         팀: 2,
         전체신청: 2156,
         상담전: 3621,
@@ -287,7 +279,6 @@ const initialState: CompanyState = {
         총매출: 25012,
       },
       {
-        관리번호: 3,
         팀: 3,
         전체신청: 5123,
         상담전: 5802,
@@ -305,7 +296,6 @@ const initialState: CompanyState = {
     ],
     삼일회계: [
       {
-        관리번호: 1,
         팀: 1,
         전체신청: 5180,
         상담전: 75120,
@@ -321,7 +311,6 @@ const initialState: CompanyState = {
         총매출: 100,
       },
       {
-        관리번호: 2,
         팀: 2,
         전체신청: 2156,
         상담전: 3621,
@@ -361,7 +350,6 @@ const companySlice = createSlice({
       const newSalesData: IndividualSalesData = {
         팀: 0,
         최근신청: '',
-        관리번호: Math.random(), // 임의의 값 - 실제로는 다른 방식으로 관리번호를 할당해야 합니다.
         이름: action.payload.name,
         총신청: 0,
         상담전: 0,

@@ -1,21 +1,29 @@
 import React from 'react';
-import { Box, AppBar, Toolbar, styled, Stack, IconButton, Badge, Button } from '@mui/material';
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  styled,
+  Stack,
+  IconButton,
+  Badge,
+  Button,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 
 // components
 import Profile from './Profile';
-import {IconMenu2 } from '@tabler/icons-react';
+import { IconMenu2 } from '@tabler/icons-react';
+import Search from './Search';
 
 interface ItemType {
-  toggleMobileSidebar:  (event: React.MouseEvent<HTMLElement>) => void;
+  toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const Header = ({toggleMobileSidebar}: ItemType) => {
-
+const Header = ({ toggleMobileSidebar }: ItemType) => {
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
-  
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
     background: theme.palette.background.paper,
@@ -31,24 +39,24 @@ const Header = ({toggleMobileSidebar}: ItemType) => {
   }));
 
   return (
-    <AppBarStyled position="sticky" color="default">
+    <AppBarStyled position='sticky' color='default'>
       <ToolbarStyled>
         <IconButton
-          color="inherit"
-          aria-label="menu"
+          color='inherit'
+          aria-label='menu'
           onClick={toggleMobileSidebar}
           sx={{
             display: {
-              lg: "none",
-              xs: "inline",
+              lg: 'none',
+              xs: 'inline',
             },
           }}
         >
-          <IconMenu2 width="20" height="20" />
+          <IconMenu2 width='20' height='20' />
         </IconButton>
-
+        <Search />
         <Box flexGrow={1} />
-        <Stack spacing={1} direction="row" alignItems="center">
+        <Stack spacing={1} direction='row' alignItems='center'>
           <Profile />
         </Stack>
       </ToolbarStyled>
