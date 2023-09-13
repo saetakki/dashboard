@@ -37,8 +37,11 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
   };
 
   const dispatch = useDispatch();
-  const teamLeaders = useSelector(
+  const initialTeamLeaders = useSelector(
     (state: RootState) => state.company.teamLeadersByCompany[tabs]
+  );
+  const [localTeamLeaders, setLocalTeamLeaders] = useState<Leader[]>(
+    initialTeamLeaders || []
   );
   const [open, setOpen] = useState(false);
   const [newLeader, setNewLeader] = useState<Leader>({
@@ -68,6 +71,30 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     setOpen(false);
   };
 
+  const handleDelete = (index: number) => {
+    const updatedTeamLeaders = [...localTeamLeaders];
+    updatedTeamLeaders.splice(index, 1);
+    setLocalTeamLeaders(updatedTeamLeaders);
+  };
+
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const handleEdit = (index: number) => {
+    setNewLeader(localTeamLeaders[index]);
+    setEditIndex(index);
+    setOpen(true);
+  };
+  const handleAddOrUpdateData = () => {
+    if (editIndex !== null) {
+      const updatedLeaders = [...localTeamLeaders];
+      updatedLeaders[editIndex] = newLeader;
+      setLocalTeamLeaders(updatedLeaders);
+      setEditIndex(null);
+    } else {
+      setLocalTeamLeaders([...localTeamLeaders, newLeader]);
+    }
+    setOpen(false);
+  };
+
   const headers = [
     '팀명',
     '리더',
@@ -78,6 +105,21 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     '아이디',
     '비밀번호',
   ];
+
+  // const handleClose = () => {
+  //   setEditIndex(null);
+  //   setNewLeader({
+  //     팀명: '',
+  //     리더: '',
+  //     번호: '',
+  //     도메인: '',
+  //     마케터수: '',
+  //     신청자: '',
+  //     아이디: '',
+  //     비밀번호: '',
+  //   });
+  //   setOpen(!open);
+  // };
 
   return (
     <Box mt={1}>
@@ -99,8 +141,8 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {teamLeaders
-                ? teamLeaders.map((row: any, index: number) => (
+              {localTeamLeaders
+                ? localTeamLeaders.map((row: any, index: number) => (
                     <TableRow key={index}>
                       {headers.map((header, cellIndex) => (
                         <TableCell key={cellIndex} sx={{ textAlign: 'center' }}>
@@ -108,16 +150,22 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
                         </TableCell>
                       ))}
                       <TableCell sx={{ textAlign: 'center' }}>
-                        <Button variant='contained' color='primary'>
+                        <Button
+                          variant='contained'
+                          color='primary'
+                          onClick={() => handleEdit(index)}
+                        >
                           정보 수정
                         </Button>
                       </TableCell>
                       <TableCell
-                        sx={{
-                          textAlign: 'center',
-                        }}
+                        sx={{ display: 'flex', justifyContent: 'center' }}
                       >
-                        <Button variant='contained' color='secondary'>
+                        <Button
+                          variant='contained'
+                          color='secondary'
+                          onClick={() => handleDelete(index)}
+                        >
                           삭제
                         </Button>
                       </TableCell>

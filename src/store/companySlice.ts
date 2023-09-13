@@ -1,6 +1,6 @@
 // src/slices/companySlice.ts
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAction, PayloadAction } from '@reduxjs/toolkit';
 
 type Company = {
   value: string;
@@ -212,11 +212,11 @@ const initialState: CompanyState = {
       },
       {
         팀명: '3',
-        팀장: '김진기',
+        리더: '김진기',
         번호: '010-3333-3333',
         도메인: 'example.com',
-        서브도메인수: '5',
-        회원수: '100',
+        마케터수: '5',
+        신청자: '100',
         아이디: 'user003',
         비밀번호: 'pass003',
       },
