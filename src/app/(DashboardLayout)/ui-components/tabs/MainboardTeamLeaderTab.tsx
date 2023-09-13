@@ -62,6 +62,10 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
   const handleOpen = () => {
     setOpen(!open);
   };
+  const handleOpenConfirmDelete = (index: number) => {
+    setDeleteIndex(index);
+    setConfirmDeleteOpen(true);
+  };
 
   const handleAddData = () => {
     const leaderData: TeamLeader = {
@@ -75,6 +79,7 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     const updatedTeamLeaders = [...localTeamLeaders];
     updatedTeamLeaders.splice(index, 1);
     setLocalTeamLeaders(updatedTeamLeaders);
+    setConfirmDeleteOpen(false);
   };
 
   const [editIndex, setEditIndex] = useState<number | null>(null);
@@ -95,6 +100,11 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     setOpen(false);
   };
 
+  const handleCloseConfirmDelete = () => {
+    setDeleteIndex(null);
+    setConfirmDeleteOpen(false);
+  };
+
   const headers = [
     '팀명',
     '리더',
@@ -106,20 +116,8 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
     '비밀번호',
   ];
 
-  // const handleClose = () => {
-  //   setEditIndex(null);
-  //   setNewLeader({
-  //     팀명: '',
-  //     리더: '',
-  //     번호: '',
-  //     도메인: '',
-  //     마케터수: '',
-  //     신청자: '',
-  //     아이디: '',
-  //     비밀번호: '',
-  //   });
-  //   setOpen(!open);
-  // };
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
   return (
     <Box mt={1}>
@@ -164,10 +162,70 @@ const MainboardTeamLeaderTab: React.FC<CompanyTabsProps> = ({ tabs, auth }) => {
                         <Button
                           variant='contained'
                           color='secondary'
-                          onClick={() => handleDelete(index)}
+                          onClick={() => handleOpenConfirmDelete(index)}
                         >
                           삭제
                         </Button>
+                        <Modal
+                          open={confirmDeleteOpen}
+                          onClose={handleCloseConfirmDelete}
+                          aria-labelledby='confirm-delete-title'
+                          aria-describedby='confirm-delete-description'
+                        >
+                          <Box
+                            sx={{
+                              top: '50%',
+                              left: '50%',
+                              transform: 'translate(-50%, -50%)',
+                              position: 'absolute',
+                              width: 600,
+                              height: 200,
+                              bgcolor: 'background.paper',
+                              border: '2px solid #000',
+                              boxShadow: 24,
+                              p: 4,
+                            }}
+                          >
+                            <Typography
+                              id='confirm-delete-title'
+                              variant='h6'
+                              component='h2'
+                            >
+                              삭제 확인
+                            </Typography>
+                            <Typography
+                              id='confirm-delete-description'
+                              variant='body1'
+                              sx={{ mt: 2 }}
+                            >
+                              선택한 데이터를 삭제하시겠습니까?
+                            </Typography>
+                            <Box
+                              sx={{
+                                mt: 3,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                              }}
+                            >
+                              <Button
+                                variant='contained'
+                                color='primary'
+                                onClick={() =>
+                                  handleDelete(deleteIndex as number)
+                                }
+                              >
+                                확인
+                              </Button>
+                              <Button
+                                variant='contained'
+                                color='secondary'
+                                onClick={handleCloseConfirmDelete}
+                              >
+                                취소
+                              </Button>
+                            </Box>
+                          </Box>
+                        </Modal>
                       </TableCell>
                     </TableRow>
                   ))
